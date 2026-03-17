@@ -1051,7 +1051,7 @@ function Host({t,teams,games,onBack,onRefresh,showT}){
                 {title:"Branding & Colors",fields:[]},
                 {title:"Payment Options",fields:[]},
                 {title:"Schedule Times",fields:[{k:"captains_meeting",l:"Captains Meeting",p:"8:30 AM"},{k:"games_start",l:"Pool Play Starts",p:"9:00 AM"},{k:"bracket_start",l:"Bracket Starts",p:"~1:00 PM"},{k:"finals_start",l:"Finals",p:"~3:00 PM"}]},
-                {title:"Game Format",fields:[{k:"scoring",l:"Scoring (e.g. Rally to 18)",p:"e.g. Rally to 21"},{k:"matches_per_game",l:"Matches Per Pool Game",p:"e.g. 2"},{k:"num_pools",l:"Number of Pools",p:"3",sel:["2","3","4","5","6"]},{k:"bracket_type",l:"Bracket Type",p:"Single Elimination",sel:["Single Elimination","Double Elimination","Round Robin","Pool Play Only"]},{k:"surface",l:"Surface",p:"Grass",sel:["Grass","Sand","Indoor","Beach","Hardcourt"]},{k:"min_players",l:"Min Players",p:"4",sel:["2","3","4","5","6"]},{k:"max_players",l:"Max Players",p:"5",sel:["2","3","4","5","6","7","8"]}]}
+                {title:"Game Format",fields:[{k:"scoring",l:"Scoring (e.g. Rally to 18)",p:"e.g. Rally to 21"},{k:"matches_per_game",l:"Matches Per Pool Game",p:"e.g. 2"},{k:"num_pools",l:"Number of Pools",p:"e.g. 3"},{k:"bracket_type",l:"Bracket Type",p:"e.g. Single Elimination"},{k:"surface",l:"Surface",p:"e.g. Grass"},{k:"min_players",l:"Min Players",p:"e.g. 4"},{k:"max_players",l:"Max Players",p:"e.g. 5"}]}
               ].map(section=>(
                 <div key={section.title} className="crd" style={{padding:20,marginBottom:14}}>
                   <div className="sh">{section.title}</div>
