@@ -1,12 +1,1191 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Ortega's Grass Volleyball</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-title" content="TourneyFlow"/>
+<meta name="theme-color" content="#0A0A0A"/>
+<link rel="manifest" href="manifest.json"/>
+<link rel="icon" type="image/png" href="icon-192.png"/>
+<link rel="shortcut icon" type="image/png" href="icon-192.png"/>
+<link rel="apple-touch-icon" href="icon-192.png"/>
+<title>TourneyFlow</title>
+<!-- v2.1 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+<script>window.Babel && (Babel.disableScriptTags = false);</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,400;0,700;0,900;1,700;1,900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;overscroll-behavior:none;}
+body{font-family:'Inter',sans-serif;background:#F7F7F7;color:#0A0A0A;-webkit-font-smoothing:antialiased;}
+::-webkit-scrollbar{width:0;}
+.B{font-family:'Barlow',sans-serif;}
+/* Buttons */
+.btn{font-family:'Inter',sans-serif;font-weight:700;cursor:pointer;border:none;transition:all .18s cubic-bezier(.4,0,.2,1);text-transform:uppercase;letter-spacing:.8px;display:inline-flex;align-items:center;justify-content:center;gap:6px;}
+.bk{background:#0A0A0A;color:#fff;padding:14px 28px;font-size:.8rem;border-radius:12px;}
+.bk:hover{background:#222;transform:translateY(-1px);box-shadow:0 6px 20px rgba(0,0,0,.2);}
+.bk:disabled{background:#C7C7CC;color:#fff;cursor:not-allowed;transform:none;box-shadow:none;}
+.ba{background:#E8FF00;color:#0A0A0A;padding:14px 28px;font-size:.82rem;font-weight:800;border-radius:12px;}
+.ba:hover{background:#d4e800;transform:translateY(-1px);box-shadow:0 6px 20px rgba(232,255,0,.35);}
+.ba:disabled{background:#f0f0c0;color:#999;cursor:not-allowed;transform:none;box-shadow:none;}
+.br{background:#fff;color:#0A0A0A;border:1.5px solid #E5E5E5;padding:13px 22px;font-size:.8rem;border-radius:12px;font-family:'Inter',sans-serif;font-weight:600;cursor:pointer;transition:all .15s;}
+.br:hover{border-color:#0A0A0A;background:#F7F7F7;}
+.bsm{padding:8px 14px!important;font-size:.72rem!important;border-radius:8px!important;}
+.bxsm{padding:5px 10px!important;font-size:.65rem!important;border-radius:6px!important;}
+/* Inputs */
+.inp{background:#F7F7F7;border:1.5px solid #E5E5E5;color:#0A0A0A;padding:13px 15px;font-family:'Inter',sans-serif;font-size:.9rem;width:100%;transition:all .15s;outline:none;border-radius:10px;}
+.inp:focus{border-color:#0A0A0A;background:#fff;box-shadow:0 0 0 3px rgba(0,0,0,.05);}
+.inp::placeholder{color:#C7C7CC;}
+.inpd{background:#1C1C1E;border:1.5px solid #2C2C2E;color:#fff;padding:13px 15px;font-family:'Inter',sans-serif;font-size:.9rem;width:100%;transition:all .15s;outline:none;border-radius:10px;}
+.inpd:focus{border-color:#E8FF00;box-shadow:0 0 0 3px rgba(232,255,0,.15);}
+.inpd::placeholder{color:#48484A;}
+/* Cards */
+.crd{background:#fff;border-radius:16px;box-shadow:0 1px 3px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);}
+.crh{cursor:pointer;transition:all .18s;}
+.crh:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(0,0,0,.1);}
+.crh:active{transform:scale(.98);}
+/* Pills */
+.pl{display:inline-flex;align-items:center;padding:4px 10px;font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;border-radius:20px;}
+.pg{background:#E8FFF0;color:#1A7A35;}
+.py{background:#FFF9E8;color:#8C6D00;}
+.pgr{background:#F2F2F7;color:#6B6B6B;}
+.pac{background:#E8FF00;color:#0A0A0A;}
+.pbl{background:#EEF5FF;color:#0055CC;}
+.pre{background:#FFF0F0;color:#CC0000;}
+/* Nav */
+.ni{background:none;border:none;color:#8E8E93;padding:11px 14px;cursor:pointer;font-family:'Inter',sans-serif;font-size:.82rem;font-weight:500;transition:all .12s;display:flex;align-items:center;gap:10px;width:100%;text-align:left;border-radius:8px;margin-bottom:2px;}
+.ni:hover{color:#0A0A0A;background:#F2F2F7;}
+.ni.on{color:#0A0A0A;background:#F2F2F7;font-weight:700;}
+/* Section headers */
+.sh{font-size:.62rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#8E8E93;margin-bottom:12px;}
+/* Divider */
+.dv{height:1px;background:#F2F2F7;margin:16px 0;}
+/* Score input */
+.si{background:#F7F7F7;border:2px solid #E5E5E5;width:72px;text-align:center;font-size:2rem;font-weight:900;color:#0A0A0A;padding:10px 0;font-family:'Barlow',sans-serif;outline:none;border-radius:10px;}
+.si:focus{border-color:#0A0A0A;background:#fff;}
+/* Animations */
+@keyframes fu{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+@keyframes sl{from{opacity:0;transform:translateX(16px);}to{opacity:1;transform:translateX(0);}}
+@keyframes sp{to{transform:rotate(360deg);}}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.5;}}
+.fu{animation:fu .22s ease forwards;}
+.sl{animation:sl .2s ease;}
+.spin{display:inline-block;width:16px;height:16px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:sp 1s linear infinite;}
+.spink{border:2px solid #E5E5E5;border-top-color:#0A0A0A;}
+.pulse{animation:pulse 1.5s ease-in-out infinite;}
+/* Mobile bottom nav */
+.bnav{display:none;position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #E5E5E5;padding:8px 0 max(8px,env(safe-area-inset-bottom));z-index:100;display:flex;}
+.bni{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 4px;background:none;border:none;cursor:pointer;font-family:'Inter',sans-serif;font-size:.58rem;font-weight:500;color:#8E8E93;transition:color .15s;}
+.bni.on{color:#0A0A0A;font-weight:700;}
+.bni-ic{font-size:1.2rem;line-height:1;}
+/* Bracket */
+.bk-match{background:#fff;border-radius:12px;box-shadow:0 1px 3px rgba(0,0,0,.08);padding:0;overflow:hidden;min-width:200px;}
+.bk-team{padding:11px 14px;display:flex;align-items:center;gap:9px;font-size:.84rem;font-weight:600;border-bottom:1px solid #F2F2F7;}
+.bk-team:last-child{border-bottom:none;}
+.bk-team.winner{background:#F9FFF0;color:#1A7A35;font-weight:700;}
+.bk-team.loser{color:#8E8E93;}
+/* Responsive */
+@media(max-width:768px){
+  .desk-only{display:none!important;}
+  .sidebar{display:none!important;}
+  .mob-content{padding-bottom:80px!important;}
+  .bnav{display:flex;}
+}
+@media(min-width:769px){
+  .bnav{display:none!important;}
+  .mob-only{display:none!important;}
+}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel" data-presets="react" data-type="module">
+const {useState,useEffect,useCallback,useRef,useMemo}=React;
+const SURL="https://qfpbdtzkandainjuejoo.supabase.co";
+const SKEY="sb_publishable_HvQx-fLOiiXNm2XLLwWnuw_8ci9rokr";
+const sb=supabase.createClient(SURL,SKEY);
+const K="#0A0A0A",W="#fff",AC="#E8FF00",RE="#FF3B30",GR="#34C759",BL="#007AFF",MU="#8E8E93",OF="#F7F7F7",BR="#E5E5E5";
+const TID=1;
+const COLORS=["#FF3B30","#007AFF","#FF9500","#AF52DE","#14b8a6","#f97316","#6366f1","#ec4899","#84cc16","#06b6d4","#8b5cf6","#10b981","#ef4444","#f59e0b","#3b82f6"];
+const POOLS=["A","B","C"];
+
+/* ── UTILS ── */
+function Spin({dark}){return <span className={`spin ${dark?"spink":""}`}/>;}
+function Badge({children,type="pgr"}){return <span className={`pl ${type}`}>{children}</span>;}
+
+function Toast({msg,type="success",onClose}){
+  useEffect(()=>{const t=setTimeout(onClose,2800);return()=>clearTimeout(t);},[]);
+  const styles={success:{bg:"#E8FFF0",b:"#A3E4B8",t:"#1A6B35"},warn:{bg:"#FFF9E8",b:"#FFE066",t:"#7A5C00"},error:{bg:"#FFF0F0",b:"#FFB3B3",t:"#CC0000"},info:{bg:"#EEF5FF",b:"#A8C8F8",t:"#0055CC"}};
+  const s=styles[type]||styles.success;
+  return(
+    <div className="sl" style={{position:"fixed",top:16,left:"50%",transform:"translateX(-50%)",background:s.bg,border:`1px solid ${s.b}`,color:s.t,padding:"11px 20px",fontSize:".84rem",fontWeight:600,zIndex:9999,borderRadius:12,boxShadow:"0 8px 32px rgba(0,0,0,.12)",whiteSpace:"nowrap",maxWidth:"90vw"}}>
+      {msg}
+    </div>
+  );
+}
+
+/* ── COUNTDOWN ── */
+function Countdown({date}){
+  const [diff,setDiff]=useState(null);
+  useEffect(()=>{
+    const calc=()=>{
+      // Parse manually for cross-browser compatibility
+      const months={"January":0,"February":1,"March":2,"April":3,"May":4,"June":5,"July":6,"August":7,"September":8,"October":9,"November":10,"December":11};
+      const parts=(date||"").split(" ");
+      const month=months[parts[0]];
+      const day=parseInt((parts[1]||"").replace(",",""));
+      const year=parseInt(parts[2]||"2026");
+      if(isNaN(month)||isNaN(day)||isNaN(year))return setDiff(null);
+      const d=new Date(year,month,day,8,30,0);
+      const ms=d-new Date();
+      if(ms<=0)return setDiff(null);
+      setDiff({d:Math.floor(ms/86400000),h:Math.floor((ms%86400000)/3600000),m:Math.floor((ms%3600000)/60000)});
+    };
+    calc();const iv=setInterval(calc,30000);return()=>clearInterval(iv);
+  },[date]);
+  if(!diff)return null;
+  return(
+    <div style={{background:"linear-gradient(135deg,#0A0A0A 0%,#1a1a1a 100%)",borderRadius:16,padding:"20px 24px",marginBottom:16,display:"flex",alignItems:"center",justifyContent:"space-between",flexWrap:"wrap",gap:12}}>
+      <div>
+        <div style={{fontSize:".6rem",fontWeight:700,letterSpacing:2,color:"#444",textTransform:"uppercase",marginBottom:4}}>Tournament Starts In</div>
+        <div style={{display:"flex",gap:16,alignItems:"baseline"}}>
+          {[{v:diff.d,l:"Days"},{v:diff.h,l:"Hrs"},{v:diff.m,l:"Min"}].map(({v,l})=>(
+            <div key={l} style={{textAlign:"center"}}>
+              <div className="B" style={{fontSize:"2.4rem",fontWeight:900,color:AC,lineHeight:1}}>{String(v).padStart(2,"0")}</div>
+              <div style={{fontSize:".58rem",color:"#555",fontWeight:600,textTransform:"uppercase",letterSpacing:1}}>{l}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div style={{width:5,height:5,borderRadius:"50%",background:AC}} className="pulse"/>
+    </div>
+  );
+}
+
+/* ── VOLLEYBALL QR ── */
+function Standings({teams,games}){
+  const hasData=teams.some(t=>t.pool);
+  if(!hasData)return null;
+  const stats={};
+  teams.forEach(t=>{stats[t.id]={name:t.name,color:t.color,pool:t.pool,w:0,l:0,pts:0,pf:0,pa:0};});
+  games.filter(g=>g.completed).forEach(g=>{
+    if(!stats[g.team1_id]||!stats[g.team2_id])return;
+    const s1=+g.score1,s2=+g.score2;
+    stats[g.team1_id].pf+=s1;stats[g.team1_id].pa+=s2;
+    stats[g.team2_id].pf+=s2;stats[g.team2_id].pa+=s1;
+    if(s1>s2){stats[g.team1_id].w++;stats[g.team1_id].pts+=2;stats[g.team2_id].l++;}
+    else{stats[g.team2_id].w++;stats[g.team2_id].pts+=2;stats[g.team1_id].l++;}
+  });
+  return(
+    <div className="crd" style={{padding:20,marginBottom:16}}>
+      <div className="sh">Pool Standings</div>
+      {POOLS.map(p=>{
+        const pt=teams.filter(t=>t.pool===p);
+        if(!pt.length)return null;
+        const sorted=[...pt].sort((a,b)=>(stats[b.id]?.pts||0)-(stats[a.id]?.pts||0));
+        return(
+          <div key={p} style={{marginBottom:18}}>
+            <div style={{fontSize:".72rem",fontWeight:700,textTransform:"uppercase",letterSpacing:1.5,color:MU,marginBottom:8,display:"flex",alignItems:"center",gap:8}}>
+              Pool {p}
+              <div style={{flex:1,height:1,background:BR}}/>
+            </div>
+            {sorted.map((t,i)=>(
+              <div key={t.id} style={{display:"flex",alignItems:"center",gap:10,padding:"8px 0",borderBottom:i<sorted.length-1?`1px solid ${BR}`:"none"}}>
+                <div className="B" style={{fontSize:"1rem",fontWeight:900,color:i===0?AC:"#C7C7CC",minWidth:20,textAlign:"center"}}>{i+1}</div>
+                <div style={{width:8,height:8,background:t.color||K,borderRadius:2,flexShrink:0}}/>
+                <span style={{flex:1,fontWeight:600,fontSize:".84rem"}}>{t.name}</span>
+                <div style={{display:"flex",gap:12,fontSize:".75rem"}}>
+                  <span style={{color:GR,fontWeight:700}}>{stats[t.id]?.w||0}W</span>
+                  <span style={{color:RE,fontWeight:700}}>{stats[t.id]?.l||0}L</span>
+                  <span style={{fontWeight:800,minWidth:20,textAlign:"right"}}>{stats[t.id]?.pts||0}pts</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+/* ── PUBLIC PAGE ── */
+function Public({t,teams,games,onReg,onHost}){
+  const [activeTab,setActiveTab]=useState("info");
+  if(!t)return(
+    <div style={{minHeight:"100vh",background:K,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:16}}>
+      <div className="B" style={{color:AC,fontWeight:900,fontSize:"1.3rem",letterSpacing:3,fontStyle:"italic"}}>TOURNEY FLOW</div>
+      <Spin/><div style={{color:"#444",fontSize:".8rem",marginTop:8}}>Loading...</div>
+    </div>
+  );
+  const spots=t.max_teams-teams.length;
+  const pct=Math.round((teams.length/t.max_teams)*100);
+  const tabs=[{id:"info",lb:"Info"},{id:"teams",lb:`Teams (${teams.length})`},{id:"schedule",lb:"Schedule"},{id:"standings",lb:"Standings"}];
+  const poolGames=p=>games.filter(g=>g.pool===p);
+  const tName=id=>teams.find(x=>x.id===id)?.name||"TBD";
+  const tColor=id=>teams.find(x=>x.id===id)?.color||"#ccc";
+
+  return(
+    <div style={{minHeight:"100vh",background:OF,fontFamily:"'Inter',sans-serif"}}>
+      {/* Header */}
+      <div style={{background:t?.hero_color||K,position:"sticky",top:0,zIndex:50}}>
+        <div style={{padding:"12px 18px",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+          <div style={{display:"flex",alignItems:"center",gap:10}}>
+            {t.logo_url&&<img src={t.logo_url} alt="" style={{height:28,width:28,objectFit:"contain",borderRadius:6}}/>}
+            <div className="B" style={{color:AC,fontWeight:900,fontSize:"1rem",letterSpacing:2,fontStyle:"italic"}}>TOURNEY FLOW</div>
+          </div>
+          <button className="br bxsm" style={{background:"transparent",border:"1px solid #2C2C2E",color:"#8E8E93"}} onClick={onHost}>Host</button>
+        </div>
+        {/* Tabs */}
+        <div style={{display:"flex",borderTop:"1px solid #1C1C1E",overflowX:"auto"}}>
+          {tabs.map(tab=>(
+            <button key={tab.id} onClick={()=>setActiveTab(tab.id)} style={{flex:1,minWidth:70,padding:"10px 4px",background:"none",border:"none",borderBottom:`2px solid ${activeTab===tab.id?AC:"transparent"}`,color:activeTab===tab.id?W:"#555",fontSize:".72rem",fontWeight:700,cursor:"pointer",textTransform:"uppercase",letterSpacing:.8,transition:"all .15s",whiteSpace:"nowrap",fontFamily:"'Inter',sans-serif"}}>
+              {tab.lb}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div style={{maxWidth:680,margin:"0 auto",padding:"16px 14px 100px"}}>
+        {/* Announcement */}
+        {t.announcement&&(
+          <div style={{background:"#FFF9E8",border:"1px solid #FFE066",borderRadius:12,padding:"13px 16px",marginBottom:14,display:"flex",gap:10}}>
+            <span style={{fontSize:"1rem",flexShrink:0}}>📢</span>
+            <div><div style={{fontWeight:700,fontSize:".8rem",marginBottom:2}}>Announcement</div><div style={{fontSize:".83rem",color:"#555",lineHeight:1.5}}>{t.announcement}</div></div>
+          </div>
+        )}
+
+        {/* INFO TAB */}
+        {activeTab==="info"&&(
+          <div className="fu">
+            {/* Hero card */}
+            <div style={{background:t.hero_color||K,borderRadius:20,padding:"28px 22px",marginBottom:14,position:"relative",overflow:"hidden"}}>
+              <div className="B" style={{position:"absolute",right:-10,top:"50%",transform:"translateY(-50%)",fontSize:"7rem",fontWeight:900,fontStyle:"italic",color:"rgba(255,255,255,.03)",lineHeight:1,userSelect:"none",pointerEvents:"none"}}>GO</div>
+              <div style={{position:"relative",zIndex:1}}>
+                <div style={{display:"inline-flex",alignItems:"center",gap:6,background:"rgba(232,255,0,.1)",border:"1px solid rgba(232,255,0,.2)",borderRadius:20,padding:"3px 12px",marginBottom:16}}>
+                  <div style={{width:5,height:5,borderRadius:"50%",background:AC}} className="pulse"/>
+                  <span style={{color:AC,fontSize:".65rem",fontWeight:700,letterSpacing:2,textTransform:"uppercase"}}>{t.city} · {t.date}</span>
+                </div>
+                <div className="B" style={{fontSize:"clamp(1.8rem,6vw,3rem)",fontWeight:900,fontStyle:"italic",color:W,lineHeight:.92,textTransform:"uppercase",marginBottom:16}}>{t.name}</div>
+                <div style={{color:"#555",fontSize:".82rem",marginBottom:20}}>{t.venue}</div>
+                <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
+                  {spots>0
+                    ?<button className="btn" style={{padding:"13px 28px",fontSize:".84rem",background:t.accent_color||AC,color:t.accent_color&&t.accent_color!=="#E8FF00"&&t.accent_color!=="#ffffff"?"#fff":"#0A0A0A",borderRadius:12,fontWeight:800}} onClick={onReg}>Register Now →</button>
+                    :<div style={{background:RE,color:W,padding:"12px 22px",borderRadius:12,fontWeight:700,fontSize:".8rem"}}>Tournament Full</div>}
+                  <a href={`https://maps.google.com/?q=${encodeURIComponent((t.venue||"")+" "+(t.city||""))}`} target="_blank" rel="noreferrer" style={{textDecoration:"none"}}>
+                    <button className="br" style={{padding:"13px 20px",fontSize:".82rem",background:"transparent",border:"1px solid #2C2C2E",color:"#888"}}>📍 Map</button>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            {/* Spots progress — Airbnb style */}
+            <div className="crd" style={{padding:"16px 18px",marginBottom:14}}>
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
+                <div style={{fontWeight:700,fontSize:".9rem"}}>{teams.length} of {t.max_teams} teams registered</div>
+                <Badge type={spots<=3?"pre":spots<=6?"py":"pg"}>{spots>0?`${spots} left`:"Full"}</Badge>
+              </div>
+              <div style={{height:6,background:BR,borderRadius:3,overflow:"hidden"}}>
+                <div style={{height:"100%",background:spots<=3?RE:spots<=6?"#FF9500":GR,width:`${pct}%`,transition:"width .5s ease",borderRadius:3}}/>
+              </div>
+              {spots>0&&spots<=5&&<div style={{fontSize:".74rem",color:RE,fontWeight:600,marginTop:8}}>⚡ Only {spots} spot{spots>1?"s":""} remaining — register now</div>}
+            </div>
+
+            <Countdown date={t.date}/>
+
+            {/* Schedule at a glance */}
+            <div className="crd" style={{padding:"16px 18px",marginBottom:14}}>
+              <div className="sh">Day Of Schedule</div>
+              {[{t:t.captains_meeting||"8:30 AM",e:"Captains Meeting",i:"📋"},{t:t.games_start||"9:00 AM",e:"Pool Play Begins",i:"🏐"},{t:t.bracket_start||"~1:00 PM",e:"Bracket Play",i:"🏆"},{t:t.finals_start||"~3:00 PM",e:"Finals",i:"🥇"}].map((s,i,arr)=>(
+                <div key={i} style={{display:"flex",gap:14,paddingBottom:i<arr.length-1?14:0,marginBottom:i<arr.length-1?14:0,borderBottom:i<arr.length-1?`1px solid ${BR}`:"none",alignItems:"flex-start"}}>
+                  <div style={{fontSize:"1.2rem",marginTop:2}}>{s.i}</div>
+                  <div style={{flex:1}}>
+                    <div style={{fontWeight:700,fontSize:".86rem"}}>{s.t}</div>
+                    <div style={{color:MU,fontSize:".78rem",marginTop:2}}>{s.e}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Format + Fee side by side */}
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12,marginBottom:14}}>
+              <div className="crd" style={{padding:"16px 18px"}}>
+                <div className="sh">Format</div>
+                {[["Scoring",t.scoring||"Rally to 21"],["Pools",`${t.num_pools||3} of 5`],["Bracket",t.bracket_type||"Single Elim"],["Surface",t.surface||"Grass"],["Roster",`${t.min_players||4}–${t.max_players||5} players`]].map(([k,v])=>(
+                  <div key={k} style={{display:"flex",justifyContent:"space-between",padding:"5px 0",borderBottom:`1px solid ${BR}`,fontSize:".76rem",gap:6}}>
+                    <span style={{color:MU,flexShrink:0}}>{k}</span><span style={{fontWeight:600,textAlign:"right"}}>{v}</span>
+                  </div>
+                ))}
+              </div>
+              <div style={{background:K,borderRadius:16,padding:"16px 18px",display:"flex",flexDirection:"column",justifyContent:"space-between"}}>
+                <div>
+                  <div className="sh" style={{color:"#444"}}>Entry Fee</div>
+                  <div className="B" style={{fontSize:"2.8rem",fontWeight:900,fontStyle:"italic",color:AC,lineHeight:1}}>${t.entry_fee}</div>
+                  <div style={{color:"#555",fontSize:".74rem",marginTop:3}}>per player</div>
+                </div>
+                <div style={{borderTop:"1px solid #1C1C1E",paddingTop:12,marginTop:12}}>
+                  {[[4,t.entry_fee*4],[5,t.entry_fee*5]].map(([n,fee])=>(
+                    <div key={n} style={{display:"flex",justifyContent:"space-between",fontSize:".76rem",marginBottom:4}}>
+                      <span style={{color:"#555"}}>{n} players</span><span style={{color:W,fontWeight:700}}>${fee}</span>
+                    </div>
+                  ))}
+                  <div style={{color:"#3a3a3a",fontSize:".68rem",marginTop:8,lineHeight:1.5}}>{t.payment_info||"Cash/Venmo at check-in"}</div>
+                </div>
+              </div>
+            </div>
+
+            <div style={{textAlign:"center",padding:"8px 0 4px"}}>
+              <div style={{fontSize:".58rem",fontWeight:700,letterSpacing:3,textTransform:"uppercase",color:"#C7C7CC",marginBottom:4}}>Powered by</div>
+              <div className="B" style={{fontSize:"1.2rem",fontWeight:900,fontStyle:"italic",letterSpacing:2,color:K}}>TOURNEY FLOW</div>
+            </div>
+          </div>
+        )}
+
+        {/* TEAMS TAB */}
+        {activeTab==="teams"&&(
+          <div className="fu">
+            <div className="crd" style={{overflow:"hidden",marginBottom:14}}>
+              <div style={{padding:"14px 18px",borderBottom:`1px solid ${BR}`,display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+                <div style={{fontWeight:700}}>{teams.length} Teams Registered</div>
+                {spots>0&&<button className="btn ba bsm" onClick={onReg}>+ Register</button>}
+              </div>
+              {teams.length===0?<div style={{padding:"32px",textAlign:"center",color:MU,fontSize:".86rem"}}>No teams yet 🏐</div>
+              :teams.map((tm,i)=>(
+                <div key={tm.id} style={{padding:"13px 18px",borderBottom:i<teams.length-1?`1px solid ${BR}`:"none",display:"flex",alignItems:"center",gap:12}}>
+                  <div className="B" style={{fontSize:".9rem",fontWeight:900,color:"#E5E5E5",minWidth:22}}>{String(i+1).padStart(2,"0")}</div>
+                  <div style={{width:10,height:10,background:tm.color||K,borderRadius:3,flexShrink:0}}/>
+                  <div style={{flex:1}}>
+                    <div style={{fontWeight:700,fontSize:".86rem"}}>{tm.name}</div>
+                    <div style={{fontSize:".72rem",color:MU,marginTop:1}}>{tm.players} players{tm.pool?` · Pool ${tm.pool}`:""}</div>
+                  </div>
+                  <Badge type={tm.paid?"pg":"py"}>{tm.paid?"Paid":"Pending"}</Badge>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* SCHEDULE TAB */}
+        {activeTab==="schedule"&&(
+          <div className="fu">
+            {games.length===0
+              ?<div className="crd" style={{padding:"40px 20px",textAlign:"center"}}>
+                  <div style={{fontSize:"2rem",marginBottom:10}}>📅</div>
+                  <div style={{fontWeight:700,marginBottom:6}}>Schedule Coming Soon</div>
+                  <div style={{color:MU,fontSize:".84rem"}}>The host will publish the schedule before game day.</div>
+                </div>
+              :POOLS.map(p=>{
+                  const pg=poolGames(p);
+                  if(!pg.length)return null;
+                  const rounds=[...new Set(pg.map(g=>g.time))];
+                  return(
+                    <div key={p} style={{marginBottom:20}}>
+                      <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:10}}>
+                        <div style={{background:K,color:AC,padding:"3px 10px",borderRadius:6,fontSize:".65rem",fontWeight:800,letterSpacing:1,textTransform:"uppercase"}}>Pool {p}</div>
+                        <div style={{flex:1,height:1,background:BR}}/>
+                      </div>
+                      {rounds.map(rnd=>(
+                        <div key={rnd} style={{marginBottom:14}}>
+                          <div style={{fontSize:".7rem",fontWeight:700,textTransform:"uppercase",letterSpacing:1,color:MU,marginBottom:8,paddingLeft:4}}>{rnd}</div>
+                          {pg.filter(g=>g.time===rnd).map((g,gi)=>(
+                            <div key={gi} className="crd" style={{padding:"13px 16px",marginBottom:8,borderLeft:`3px solid ${g.completed?GR:BR}`}}>
+                              <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:6}}>
+                                <Badge type="pgr">{g.court||"Court"}</Badge>
+                                {g.completed&&<Badge type="pg">Final</Badge>}
+                              </div>
+                              <div style={{display:"flex",alignItems:"center",gap:10}}>
+                                <div style={{flex:1}}>
+                                  <div style={{display:"flex",alignItems:"center",gap:7,marginBottom:6}}>
+                                    <div style={{width:8,height:8,background:tColor(g.team1_id),borderRadius:2,flexShrink:0}}/>
+                                    <span style={{fontWeight:g.completed&&g.score1>g.score2?800:600,fontSize:".86rem",color:g.completed&&g.score1<g.score2?MU:K}}>{tName(g.team1_id)}</span>
+                                  </div>
+                                  <div style={{display:"flex",alignItems:"center",gap:7}}>
+                                    <div style={{width:8,height:8,background:tColor(g.team2_id),borderRadius:2,flexShrink:0}}/>
+                                    <span style={{fontWeight:g.completed&&g.score2>g.score1?800:600,fontSize:".86rem",color:g.completed&&g.score2<g.score1?MU:K}}>{tName(g.team2_id)}</span>
+                                  </div>
+                                </div>
+                                {g.completed&&(
+                                  <div style={{textAlign:"right"}}>
+                                    <div className="B" style={{fontSize:"1.4rem",fontWeight:900,lineHeight:1.1,color:g.score1>g.score2?GR:MU}}>{g.score1}</div>
+                                    <div className="B" style={{fontSize:"1.4rem",fontWeight:900,lineHeight:1.1,color:g.score2>g.score1?GR:MU}}>{g.score2}</div>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      ))}
+                    </div>
+                  );
+                })
+            }
+          </div>
+        )}
+
+        {/* STANDINGS TAB */}
+        {activeTab==="standings"&&(
+          <div className="fu">
+            <Standings teams={teams} games={games}/>
+            {games.filter(g=>g.completed).length===0&&<div className="crd" style={{padding:"40px 20px",textAlign:"center"}}>
+              <div style={{fontSize:"2rem",marginBottom:10}}>🏆</div>
+              <div style={{fontWeight:700,marginBottom:6}}>Standings Update Live</div>
+              <div style={{color:MU,fontSize:".84rem"}}>Standings will appear here as scores are entered on game day.</div>
+            </div>}
+          </div>
+        )}
+      </div>
+
+
+    </div>
+  );
+}
+
+/* ── REGISTRATION ── */
+
+function Reg({t,onBack,onSubmit}){
+  const [step,setStep]=useState(1);
+  const [name,setName]=useState("");
+  const [cap,setCap]=useState("");
+  const [phone,setPhone]=useState("");
+  const [players,setPlayers]=useState(4);
+  const [pay,setPay]=useState(false);
+  const [saving,setSaving]=useState(false);
+  const [done,setDone]=useState(false);
+  const fee=players*(t?.entry_fee||25);
+
+  const go=async()=>{
+    setSaving(true);
+    const ok=await onSubmit({name,captain:cap,phone,players,paid:pay,color:COLORS[Math.floor(Math.random()*COLORS.length)]});
+    setSaving(false);
+    if(ok!==false)setDone(true);
+  };
+
+  if(done)return(
+    <div style={{minHeight:"100vh",background:"#0A0A0A",display:"flex",alignItems:"center",justifyContent:"center",padding:"22px"}}>
+      <div style={{textAlign:"center",maxWidth:"380px",width:"100%"}}>
+        <div style={{width:"72px",height:"72px",background:"#E8FF00",borderRadius:"50%",display:"flex",alignItems:"center",justifyContent:"center",fontSize:"2rem",margin:"0 auto 24px"}}>✓</div>
+        <div style={{fontFamily:"Barlow,sans-serif",fontSize:"3rem",fontWeight:900,fontStyle:"italic",color:"#E8FF00",lineHeight:0.88,textTransform:"uppercase",marginBottom:"10px"}}>YOU ARE IN.</div>
+        <div style={{fontFamily:"Barlow,sans-serif",fontSize:"1.3rem",fontWeight:700,color:"#fff",marginBottom:"24px"}}>{name}</div>
+        <button onClick={onBack} style={{width:"100%",padding:"15px",background:"#E8FF00",color:"#0A0A0A",border:"none",borderRadius:"12px",fontWeight:800,fontSize:".9rem",cursor:"pointer",textTransform:"uppercase",letterSpacing:"1px"}}>Back to Tournament</button>
+      </div>
+    </div>
+  );
+
+  return(
+    <div style={{minHeight:"100vh",background:"#F7F7F7"}}>
+      <div style={{background:"#0A0A0A",padding:"16px 20px",display:"flex",alignItems:"center",gap:"16px"}}>
+        <button onClick={onBack} style={{background:"none",border:"none",color:"#888",cursor:"pointer",fontSize:"1.4rem",lineHeight:1,padding:"4px",fontFamily:"sans-serif"}}>←</button>
+        <div style={{flex:1,display:"flex",gap:"6px"}}>
+          <div style={{flex:1,height:"3px",background:step>=1?"#E8FF00":"#333",borderRadius:"2px"}}></div>
+          <div style={{flex:1,height:"3px",background:step>=2?"#E8FF00":"#333",borderRadius:"2px"}}></div>
+          <div style={{flex:1,height:"3px",background:step>=3?"#E8FF00":"#333",borderRadius:"2px"}}></div>
+        </div>
+        <div style={{fontSize:".75rem",color:"#555",fontWeight:600}}>{step} of 3</div>
+      </div>
+
+      <div style={{maxWidth:"460px",margin:"0 auto",padding:"32px 20px 60px"}}>
+
+        {step===1&&(
+          <div>
+            <div style={{fontFamily:"Barlow,sans-serif",fontSize:"2rem",fontWeight:900,fontStyle:"italic",textTransform:"uppercase",marginBottom:"6px"}}>Team Info</div>
+            <div style={{color:"#8E8E93",fontSize:".86rem",marginBottom:"28px"}}>Tell us about your team</div>
+            <div style={{marginBottom:"20px"}}>
+              <div style={{fontSize:".7rem",fontWeight:700,textTransform:"uppercase",letterSpacing:"0.5px",color:"#8E8E93",marginBottom:"8px"}}>Team Name</div>
+              <input value={name} onChange={e=>setName(e.target.value)} placeholder="e.g. Sand Devils" style={{width:"100%",padding:"14px 16px",border:"1.5px solid #E5E5E5",borderRadius:"10px",fontSize:".9rem",fontFamily:"Inter,sans-serif",background:"#fff",color:"#0A0A0A",outline:"none",boxSizing:"border-box"}}/>
+            </div>
+            <div style={{marginBottom:"20px"}}>
+              <div style={{fontSize:".7rem",fontWeight:700,textTransform:"uppercase",letterSpacing:"0.5px",color:"#8E8E93",marginBottom:"8px"}}>Captain Name</div>
+              <input value={cap} onChange={e=>setCap(e.target.value)} placeholder="e.g. John Ortega" style={{width:"100%",padding:"14px 16px",border:"1.5px solid #E5E5E5",borderRadius:"10px",fontSize:".9rem",fontFamily:"Inter,sans-serif",background:"#fff",color:"#0A0A0A",outline:"none",boxSizing:"border-box"}}/>
+            </div>
+            <div style={{marginBottom:"32px"}}>
+              <div style={{fontSize:".7rem",fontWeight:700,textTransform:"uppercase",letterSpacing:"0.5px",color:"#8E8E93",marginBottom:"8px"}}>Captain Phone</div>
+              <input value={phone} onChange={e=>setPhone(e.target.value)} placeholder="214-555-0123" type="tel" style={{width:"100%",padding:"14px 16px",border:"1.5px solid #E5E5E5",borderRadius:"10px",fontSize:".9rem",fontFamily:"Inter,sans-serif",background:"#fff",color:"#0A0A0A",outline:"none",boxSizing:"border-box"}}/>
+            </div>
+            <button disabled={!name||!cap||!phone} onClick={()=>setStep(2)} style={{width:"100%",padding:"16px",background:!name||!cap||!phone?"#C7C7CC":"#0A0A0A",color:"#fff",border:"none",borderRadius:"12px",fontWeight:700,fontSize:".9rem",cursor:!name||!cap||!phone?"not-allowed":"pointer",textTransform:"uppercase",letterSpacing:"1px",fontFamily:"Inter,sans-serif"}}>Continue →</button>
+          </div>
+        )}
+
+        {step===2&&(
+          <div>
+            <div style={{fontFamily:"Barlow,sans-serif",fontSize:"2rem",fontWeight:900,fontStyle:"italic",textTransform:"uppercase",marginBottom:"6px"}}>Your Squad</div>
+            <div style={{color:"#8E8E93",fontSize:".86rem",marginBottom:"28px"}}>How many players?</div>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"14px",marginBottom:"32px"}}>
+              {[4,5].map(n=>(
+                <button key={n} onClick={()=>setPlayers(n)} style={{padding:"28px 12px",background:players===n?"#0A0A0A":"#fff",color:players===n?"#fff":"#0A0A0A",border:"2px solid "+(players===n?"#0A0A0A":"#E5E5E5"),borderRadius:"14px",cursor:"pointer",textAlign:"center",fontFamily:"Inter,sans-serif",display:"block",width:"100%"}}>
+                  <div style={{fontFamily:"Barlow,sans-serif",fontSize:"2.5rem",fontWeight:900,fontStyle:"italic",lineHeight:1}}>{n}</div>
+                  <div style={{fontSize:".8rem",fontWeight:600,marginTop:"6px"}}>players</div>
+                  <div style={{fontSize:".9rem",fontWeight:700,marginTop:"8px",color:players===n?"#E8FF00":"#8E8E93"}}>${n*(t?.entry_fee||25)}</div>
+                </button>
+              ))}
+            </div>
+            <div style={{display:"flex",gap:"10px"}}>
+              <button onClick={()=>setStep(1)} style={{padding:"16px",flex:"0 0 70px",background:"#fff",color:"#0A0A0A",border:"1.5px solid #E5E5E5",borderRadius:"12px",fontWeight:600,cursor:"pointer",fontSize:".9rem",fontFamily:"Inter,sans-serif"}}>←</button>
+              <button onClick={()=>setStep(3)} style={{flex:1,padding:"16px",background:"#0A0A0A",color:"#fff",border:"none",borderRadius:"12px",fontWeight:700,fontSize:".9rem",cursor:"pointer",textTransform:"uppercase",letterSpacing:"1px",fontFamily:"Inter,sans-serif"}}>Continue →</button>
+            </div>
+          </div>
+        )}
+
+        {step===3&&(
+          <div>
+            <div style={{fontFamily:"Barlow,sans-serif",fontSize:"2rem",fontWeight:900,fontStyle:"italic",textTransform:"uppercase",marginBottom:"6px"}}>Payment</div>
+            <div style={{color:"#8E8E93",fontSize:".86rem",marginBottom:"28px"}}>How will you pay?</div>
+            <div style={{background:"#0A0A0A",borderRadius:"16px",padding:"20px",marginBottom:"20px",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+              <div style={{color:"#555",fontSize:".8rem"}}>{name} · {players} players</div>
+              <div style={{fontFamily:"Barlow,sans-serif",fontSize:"2.8rem",fontWeight:900,fontStyle:"italic",color:"#E8FF00"}}>${fee}</div>
+            </div>
+            <div style={{display:"flex",flexDirection:"column",gap:"10px",marginBottom:"28px"}}>
+              {[
+                t?.show_checkin!==false&&{v:false,icon:"💵",title:t?.checkin_label||"Pay at Check-in",desc:t?.checkin_desc||"Cash or Venmo on game day"},
+                t?.show_online!==false&&{v:true,icon:"💳",title:t?.online_label||"Pay Online",desc:t?.online_desc||"Secure your spot now"}
+              ].filter(Boolean).map(o=>(
+                <div key={o.title} onClick={()=>setPay(o.v)} style={{background:"#fff",border:"2px solid "+(pay===o.v?"#0A0A0A":"#E5E5E5"),borderRadius:"14px",padding:"18px",cursor:"pointer",display:"flex",alignItems:"center",gap:"14px"}}>
+                  <span style={{fontSize:"1.5rem"}}>{o.icon}</span>
+                  <div style={{flex:1}}>
+                    <div style={{fontWeight:700,fontSize:".9rem",marginBottom:"3px"}}>{o.title}</div>
+                    <div style={{fontSize:".78rem",color:"#8E8E93"}}>{o.desc}</div>
+                  </div>
+                  <div style={{width:"20px",height:"20px",borderRadius:"50%",border:"2px solid "+(pay===o.v?"#0A0A0A":"#E5E5E5"),background:pay===o.v?"#0A0A0A":"transparent",flexShrink:0}}></div>
+                </div>
+              ))}
+            </div>
+            <div style={{display:"flex",gap:"10px"}}>
+              <button onClick={()=>setStep(2)} style={{padding:"16px",flex:"0 0 70px",background:"#fff",color:"#0A0A0A",border:"1.5px solid #E5E5E5",borderRadius:"12px",fontWeight:600,cursor:"pointer",fontSize:".9rem",fontFamily:"Inter,sans-serif"}}>←</button>
+              <button disabled={saving} onClick={go} style={{flex:1,padding:"16px",background:"#0A0A0A",color:"#fff",border:"none",borderRadius:"12px",fontWeight:700,fontSize:".9rem",cursor:"pointer",textTransform:"uppercase",letterSpacing:"1px",fontFamily:"Inter,sans-serif"}}>{saving?"Saving...":"Complete Registration →"}</button>
+            </div>
+          </div>
+        )}
+
+      </div>
+    </div>
+  );
+}
+
+function Login({t,onBack,onSuccess}){
+  const [pw,setPw]=useState("");
+  const [err,setErr]=useState(false);
+  const [loading,setLoading]=useState(false);
+  const go=async()=>{
+    setLoading(true);
+    await new Promise(r=>setTimeout(r,400));
+    setLoading(false);
+    if(pw===t?.host_password){onSuccess();}
+    else{setErr(true);setTimeout(()=>setErr(false),2000);}
+  };
+  return(
+    <div style={{minHeight:"100vh",background:K,display:"flex",alignItems:"center",justifyContent:"center",padding:22}}>
+      <div style={{width:"100%",maxWidth:340,textAlign:"center"}}>
+        <div className="B" style={{color:AC,fontWeight:900,fontSize:"1.1rem",letterSpacing:3,fontStyle:"italic",marginBottom:40}}>TOURNEY FLOW</div>
+        <div className="B" style={{fontSize:"1.8rem",fontWeight:900,fontStyle:"italic",color:W,textTransform:"uppercase",marginBottom:6}}>Host Login</div>
+        <div style={{color:"#555",fontSize:".82rem",marginBottom:24}}>Enter your password to manage this tournament</div>
+        <input className="inpd" type="password" placeholder="Password" value={pw} onChange={e=>setPw(e.target.value)} onKeyDown={e=>e.key==="Enter"&&go()} style={{marginBottom:err?8:16,borderColor:err?RE:"transparent"}}/>
+        {err&&<div style={{color:RE,fontSize:".78rem",marginBottom:12,fontWeight:600}}>Incorrect password — try again</div>}
+        <button className="btn ba" style={{width:"100%",padding:15,marginBottom:12}} onClick={go} disabled={loading||!pw}>{loading?<Spin dark/>:"Enter Dashboard →"}</button>
+        <button className="br" style={{width:"100%",background:"transparent",border:"1px solid #2C2C2E",color:"#555"}} onClick={onBack}>← Back</button>
+      </div>
+    </div>
+  );
+}
+
+/* ── HOST DASHBOARD ── */
+function App(){
+  const [view,setView]=useState("public");
+  const [tournament,setTournament]=useState(null);
+  const [teams,setTeams]=useState([]);
+  const [games,setGames]=useState([]);
+  const [toast,setToast]=useState(null);
+  const showT=(m,tp="success")=>setToast({m,tp,key:Date.now()});
+  const isAuthed=()=>sessionStorage.getItem("tf_host")==="1";
+  const setAuthed=()=>sessionStorage.setItem("tf_host","1");
+
+  const load=useCallback(async()=>{
+    const[{data:t},{data:tm},{data:gm}]=await Promise.all([
+      sb.from("tournaments").select("*").eq("id",TID).single(),
+      sb.from("teams").select("*").eq("tournament_id",TID).order("created_at"),
+      sb.from("games").select("*").eq("tournament_id",TID).order("pool").order("id")
+    ]);
+    if(t)setTournament(t);
+    if(tm)setTeams(tm);
+    if(gm)setGames(gm);
+  },[]);
+
+  useEffect(()=>{load();},[load]);
+
+  useEffect(()=>{
+    const ch=sb.channel("rt-all")
+      .on("postgres_changes",{event:"*",schema:"public",table:"teams"},()=>load())
+      .on("postgres_changes",{event:"*",schema:"public",table:"tournaments"},()=>load())
+      .on("postgres_changes",{event:"*",schema:"public",table:"games"},()=>load())
+      .subscribe();
+    return()=>sb.removeChannel(ch);
+  },[load]);
+
+  const addTeam=async(team)=>{
+    const{error}=await sb.from("teams").insert({...team,tournament_id:TID});
+    if(error){showT("Registration failed","error");return false;}
+    await load();return true;
+  };
+
+  const T=toast&&<Toast key={toast.key} msg={toast.m} type={toast.tp} onClose={()=>setToast(null)}/>;
+  if(view==="public")return <>{T}<Public t={tournament} teams={teams} games={games} onReg={()=>setView("reg")} onHost={()=>isAuthed()?setView("host"):setView("login")}/></>;
+  if(view==="reg")return <div style={{minHeight:"100vh",background:"#0A0A0A",display:"flex",alignItems:"center",justifyContent:"center"}}><div style={{textAlign:"center"}}><div style={{color:"#E8FF00",fontSize:"3rem",marginBottom:16}}>🏐</div><div style={{color:"#fff",fontWeight:700,fontSize:"1.2rem",marginBottom:24}}>Registration removed</div><button onClick={()=>setView("public")} style={{background:"#E8FF00",color:"#0A0A0A",border:"none",padding:"12px 24px",borderRadius:10,fontWeight:700,cursor:"pointer"}}>← Back</button></div></div>;
+  if(view==="login")return <Login t={tournament} onBack={()=>setView("public")} onSuccess={()=>{setAuthed();setView("host")}}/>;
+  if(view==="host"){const H=window.__TFHost||(() => React.createElement("div",{style:{padding:40,textAlign:"center"}},"Loading dashboard..."));return React.createElement(React.Fragment,null,T,React.createElement(H,{t:tournament,teams,games,onBack:()=>setView("public"),onRefresh:load,showT}));}
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+<script>
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>{
+    navigator.serviceWorker.register('sw.js').catch(()=>{});
+  });
+}
+
+</script>
+<script type="text/babel" data-presets="react">
+
+function Host({t,teams,games,onBack,onRefresh,showT}){
+  const [tab,setTab]=useState("home");
+  const [saving,setSaving]=useState(false);
+  const [edit,setEdit]=useState({...t});
+  const [genning,setGenning]=useState(false);
+  const [localGames,setLocalGames]=useState(games);
+  const [scoreEdit,setScoreEdit]=useState({});
+  const [editTeam,setEditTeam]=useState(null);
+  const [teamForm,setTeamForm]=useState({});
+
+  useEffect(()=>setLocalGames(games),[games]);
+
+  const npaid=teams.filter(x=>x.paid).length;
+  const unp=teams.filter(x=>!x.paid).length;
+  const checkedIn=teams.filter(x=>x.checked_in).length;
+
+  const save=async(extra={})=>{
+    setSaving(true);
+    const{error}=await sb.from("tournaments").update({
+      name:edit.name,date:edit.date,venue:edit.venue,city:edit.city,
+      entry_fee:+edit.entry_fee,max_teams:+edit.max_teams,host_password:edit.host_password,
+      scoring:edit.scoring,matches_per_game:edit.matches_per_game,
+      num_pools:edit.num_pools,bracket_type:edit.bracket_type,
+      bracket_seed:edit.bracket_seed,surface:edit.surface,
+      min_players:edit.min_players,max_players:edit.max_players,
+      captains_meeting:edit.captains_meeting,games_start:edit.games_start,
+      bracket_start:edit.bracket_start,finals_start:edit.finals_start,
+      payment_info:edit.payment_info,announcement:edit.announcement,
+      logo_url:edit.logo_url,emoji:edit.emoji,hero_color:edit.hero_color,accent_color:edit.accent_color,show_checkin:edit.show_checkin!==false,show_online:edit.show_online!==false,checkin_label:edit.checkin_label,checkin_desc:edit.checkin_desc,online_label:edit.online_label,online_desc:edit.online_desc,...extra
+    }).eq("id",t.id);
+    setSaving(false);
+    error?showT("Error: "+error.message,"error"):(showT("Saved ✓"),onRefresh());
+  };
+
+  const markPaid=async(id)=>{
+    const{error}=await sb.from("teams").update({paid:true}).eq("id",id);
+    error?showT("Error","error"):(showT("Marked paid ✓"),onRefresh());
+  };
+
+  const checkIn=async(id)=>{
+    const{error}=await sb.from("teams").update({checked_in:true}).eq("id",id);
+    error?showT("Error","error"):(showT("Checked in ✓"),onRefresh());
+  };
+
+  const assignPool=async(id,p)=>{
+    const{error}=await sb.from("teams").update({pool:p}).eq("id",id);
+    error?showT("Error","error"):(showT(`Pool ${p} ✓`),onRefresh());
+  };
+
+  const removeTeam=async(id)=>{
+    if(!window.confirm("Remove this team?"))return;
+    const{error}=await sb.from("teams").delete().eq("id",id);
+    if(error){showT("Error: "+error.message,"error");console.error(error);}
+    else{showT("Team removed","warn");await onRefresh();}
+  };
+
+  const saveTeamEdit=async()=>{
+    const{error}=await sb.from("teams").update({
+      name:teamForm.name,captain:teamForm.captain,phone:teamForm.phone,
+      players:+teamForm.players,paid:teamForm.paid,pool:teamForm.pool||null
+    }).eq("id",editTeam.id);
+    error?showT("Error","error"):(showT("Team updated ✓"),setEditTeam(null),onRefresh());
+  };
+
+  const saveScore=async(g)=>{
+    const sc=scoreEdit[g.id];
+    if(!sc?.s1||!sc?.s2)return showT("Enter both scores","warn");
+    const{error}=await sb.from("games").update({score1:+sc.s1,score2:+sc.s2,completed:true}).eq("id",g.id);
+    error?showT("Error","error"):(showT("Score saved ✓"),setScoreEdit(p=>({...p,[g.id]:undefined})),onRefresh());
+  };
+
+  const generateSchedule=async()=>{
+    setGenning(true);
+    await sb.from("games").delete().eq("tournament_id",t.id);
+    const courts=["Court A","Court B","Court C"];
+    const inserts=[];
+    for(const pool of POOLS){
+      const pt=teams.filter(x=>x.pool===pool);
+      if(pt.length<2)continue;
+      const poolGames=[];
+      for(let i=0;i<pt.length;i++)for(let j=i+1;j<pt.length;j++)poolGames.push({team1_id:pt[i].id,team2_id:pt[j].id});
+      const rounds=[];
+      const rem=[...poolGames];
+      while(rem.length>0){
+        const round=[];const used=new Set();
+        for(let i=rem.length-1;i>=0;i--){
+          const g=rem[i];
+          if(!used.has(g.team1_id)&&!used.has(g.team2_id)){round.push(g);used.add(g.team1_id);used.add(g.team2_id);rem.splice(i,1);}
+        }
+        rounds.push(round);
+      }
+      rounds.forEach((round,ri)=>round.forEach((g,gi)=>inserts.push({tournament_id:t.id,pool,time:`Round ${ri+1}`,court:courts[gi%courts.length],team1_id:g.team1_id,team2_id:g.team2_id,completed:false})));
+    }
+    if(inserts.length>0){
+      const{error}=await sb.from("games").insert(inserts);
+      error?showT("Error: "+error.message,"error"):(showT(`${inserts.length} games generated ✓`),onRefresh());
+    } else showT("Assign teams to pools first","warn");
+    setGenning(false);
+  };
+
+  const tName=id=>teams.find(x=>x.id===id)?.name||"TBD";
+  const tColor=id=>teams.find(x=>x.id===id)?.color||"#ccc";
+  const poolTeams=p=>teams.filter(x=>x.pool===p);
+
+  const NAV_DESK=[{id:"home",ic:"⊡",lb:"Home"},{id:"teams",ic:"👥",lb:"Teams"},{id:"pools",ic:"🏐",lb:"Pools"},{id:"schedule",ic:"📅",lb:"Schedule"},{id:"payments",ic:"💵",lb:"Payments"},{id:"announce",ic:"📣",lb:"Announce"},{id:"settings",ic:"⚙️",lb:"Settings"}];
+  const NAV_MOB=[{id:"home",ic:"⊡",lb:"Home"},{id:"teams",ic:"👥",lb:"Teams"},{id:"schedule",ic:"📅",lb:"Scores"},{id:"payments",ic:"💵",lb:"Pay"},{id:"settings",ic:"⚙️",lb:"More"}];
+
+  return(
+    <div style={{display:"flex",height:"100vh",background:OF,overflow:"hidden",fontFamily:"'Inter',sans-serif"}}>
+      {/* Desktop sidebar */}
+      <div className="sidebar desk-only" style={{width:210,background:W,borderRight:`1px solid ${BR}`,display:"flex",flexDirection:"column",flexShrink:0,padding:"0 10px"}}>
+        <div style={{padding:"18px 8px 14px",borderBottom:`1px solid ${BR}`,marginBottom:10}}>
+          <div className="B" style={{fontSize:".9rem",fontWeight:900,fontStyle:"italic",letterSpacing:2}}>TOURNEY FLOW</div>
+          <div style={{fontSize:".58rem",color:MU,marginTop:2,textTransform:"uppercase",letterSpacing:1}}>Host Dashboard</div>
+        </div>
+        <div style={{background:OF,borderRadius:12,padding:"12px 14px",margin:"0 0 12px"}}>
+          <div style={{fontSize:".6rem",fontWeight:700,color:MU,textTransform:"uppercase",letterSpacing:1.5,marginBottom:6}}>Active Tournament</div>
+          <div style={{fontWeight:700,fontSize:".84rem",lineHeight:1.3,marginBottom:3}}>{t.name}</div>
+          <div style={{fontSize:".68rem",color:MU}}>{t.date}</div>
+          <Badge type="pac" style={{marginTop:8,display:"inline-flex"}}>LIVE</Badge>
+        </div>
+        <nav style={{flex:1}}>
+          {NAV_DESK.map(n=>(
+            <button key={n.id} className={`ni ${tab===n.id?"on":""}`} onClick={()=>setTab(n.id)}>
+              <span>{n.ic}</span><span>{n.lb}</span>
+              {n.id==="payments"&&unp>0&&<span style={{marginLeft:"auto",background:RE,color:W,padding:"1px 7px",fontSize:".6rem",fontWeight:800,borderRadius:10}}>{unp}</span>}
+            </button>
+          ))}
+        </nav>
+        <div style={{padding:"10px 0",borderTop:`1px solid ${BR}`}}>
+          <button className="ni" onClick={onBack}><span>👀</span><span style={{fontSize:".8rem"}}>Public View</span></button>
+        </div>
+      </div>
+
+      {/* Main content */}
+      <div style={{flex:1,overflow:"auto",display:"flex",flexDirection:"column"}}>
+        {/* Top bar */}
+        <div style={{background:W,borderBottom:`1px solid ${BR}`,padding:"12px 20px",display:"flex",alignItems:"center",justifyContent:"space-between",position:"sticky",top:0,zIndex:20,flexShrink:0}}>
+          <div style={{display:"flex",alignItems:"center",gap:12}}>
+            <button className="mob-only br bsm" style={{padding:"8px 12px"}} onClick={onBack}>← Public</button>
+            <div className="B desk-only" style={{fontSize:".95rem",fontWeight:700,letterSpacing:1,textTransform:"uppercase"}}>{NAV_DESK.find(n=>n.id===tab)?.lb}</div>
+          </div>
+          <button className="br bsm" onClick={onRefresh}>↻ Refresh</button>
+        </div>
+
+        <div className="mob-content" style={{flex:1,overflow:"auto",padding:"16px 16px"}}>
+
+          {/* HOME TAB */}
+          {tab==="home"&&(
+            <div className="fu">
+              {/* Quick stats — Uber style */}
+              <div style={{display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:10,marginBottom:14}}>
+                {[{v:teams.length,s:`of ${t.max_teams}`,l:"Teams",c:K,ic:"👥"},{v:npaid,s:`${unp} unpaid`,l:"Paid",c:GR,ic:"💵"},{v:checkedIn,s:`${teams.length-checkedIn} not in`,l:"Checked In",c:BL,ic:"✅"},{v:t.max_teams-teams.length,s:"spots open",l:"Available",c:MU,ic:"🏐"}].map((s,i)=>(
+                  <div key={i} className="crd" style={{padding:"16px 18px"}}>
+                    <div style={{fontSize:"1rem",marginBottom:6}}>{s.ic}</div>
+                    <div className="B" style={{fontSize:"2rem",fontWeight:900,color:s.c,lineHeight:1}}>{s.v}</div>
+                    <div style={{fontSize:".7rem",color:MU,marginTop:3}}>{s.s}</div>
+                    <div style={{fontSize:".62rem",fontWeight:700,textTransform:"uppercase",letterSpacing:1,color:"#C7C7CC",marginTop:2}}>{s.l}</div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Urgent actions */}
+              {unp>0&&(
+                <div style={{background:"#FFF9E8",border:"1px solid #FFE066",borderRadius:12,padding:"13px 16px",marginBottom:14,display:"flex",alignItems:"center",justifyContent:"space-between",gap:12}}>
+                  <div><div style={{fontWeight:700,fontSize:".84rem",color:"#7A5C00"}}>💵 {unp} team{unp>1?"s":""} haven't paid</div><div style={{fontSize:".74rem",color:"#A07020",marginTop:2}}>Tap to view</div></div>
+                  <button className="btn bk bsm" onClick={()=>setTab("payments")}>View →</button>
+                </div>
+              )}
+
+              {/* Quick actions — Uber style thumb-reach buttons */}
+              <div className="crd" style={{padding:"16px 18px",marginBottom:14}}>
+                <div className="sh">Quick Actions</div>
+                <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:9}}>
+                  {[{lb:"Check Teams In",ic:"✅",fn:()=>setTab("teams")},{lb:"Enter Scores",ic:"📊",fn:()=>setTab("schedule")},{lb:"Mark Payments",ic:"💵",fn:()=>setTab("payments")},{lb:"Post Announcement",ic:"📣",fn:()=>setTab("announce")}].map((a,i)=>(
+                    <button key={i} onClick={a.fn} style={{background:OF,border:`1.5px solid ${BR}`,borderRadius:12,padding:"14px 12px",cursor:"pointer",textAlign:"left",transition:"all .15s",display:"flex",flexDirection:"column",gap:6}}>
+                      <span style={{fontSize:"1.3rem"}}>{a.ic}</span>
+                      <span style={{fontSize:".76rem",fontWeight:700,color:K,lineHeight:1.3}}>{a.lb}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Tournament summary */}
+              <div className="crd" style={{padding:"16px 18px",marginBottom:14}}>
+                <div className="sh">Tournament Details</div>
+                {[["Name",t.name],["Date",t.date],["Venue",t.venue],["City",t.city],["Entry",`$${t.entry_fee}/player`],["Format",t.scoring||"Rally to 21"],["Surface",t.surface||"Grass"]].map(([k,v])=>(
+                  <div key={k} style={{display:"flex",justifyContent:"space-between",padding:"7px 0",borderBottom:`1px solid ${BR}`,fontSize:".8rem"}}>
+                    <span style={{color:MU}}>{k}</span><span style={{fontWeight:600,textAlign:"right",maxWidth:"60%"}}>{v}</span>
+                  </div>
+                ))}
+                <button className="br bsm" style={{marginTop:12,width:"100%"}} onClick={()=>setTab("settings")}>Edit Details →</button>
+              </div>
+            </div>
+          )}
+
+          {/* TEAMS TAB */}
+          {tab==="teams"&&(
+            <div className="fu">
+              <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:12}}>
+                <div style={{fontWeight:700}}>{teams.length} Teams</div>
+                <div style={{display:"flex",gap:6}}>
+                  <Badge type="pg">{npaid} paid</Badge>
+                  <Badge type="py">{unp} pending</Badge>
+                </div>
+              </div>
+              {teams.length===0?<div className="crd" style={{padding:"40px 20px",textAlign:"center",color:MU}}>No teams yet.</div>
+              :teams.map(tm=>(
+                <div key={tm.id} className="crd" style={{padding:"14px 16px",marginBottom:9,borderLeft:`3px solid ${tm.color||K}`}}>
+                  <div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",gap:10}}>
+                    <div style={{flex:1}}>
+                      <div style={{fontWeight:700,marginBottom:3}}>{tm.name}</div>
+                      <div style={{fontSize:".73rem",color:MU,lineHeight:1.5}}>{tm.captain} · {tm.phone}<br/>{tm.players} players{tm.pool?` · Pool ${tm.pool}`:""}</div>
+                      <div style={{display:"flex",gap:6,marginTop:8,flexWrap:"wrap"}}>
+                        <Badge type={tm.paid?"pg":"py"}>{tm.paid?"Paid ✓":"Pending"}</Badge>
+                        <Badge type={tm.checked_in?"pg":"pgr"}>{tm.checked_in?"Here ✓":"Not checked in"}</Badge>
+                      </div>
+                    </div>
+                    <div style={{display:"flex",flexDirection:"column",gap:6,flexShrink:0}}>
+                      {!tm.checked_in&&<button className="btn ba bxsm" onClick={()=>checkIn(tm.id)}>Check In</button>}
+                      {!tm.paid&&<button className="btn bk bxsm" onClick={()=>markPaid(tm.id)}>Mark Paid</button>}
+                      <button className="br bxsm" onClick={()=>{setEditTeam(tm);setTeamForm({...tm});}}>Edit</button>
+                      <button className="br bxsm" style={{color:RE,borderColor:RE}} onClick={()=>removeTeam(tm.id)}>Remove</button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* POOLS TAB */}
+          {tab==="pools"&&(
+            <div className="fu">
+              <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:10,marginBottom:16}}>
+                {POOLS.map(p=>(
+                  <div key={p} className="crd" style={{padding:"13px 12px"}}>
+                    <div style={{fontSize:".65rem",fontWeight:700,textTransform:"uppercase",letterSpacing:1.5,color:MU,marginBottom:10}}>Pool {p} <span style={{color:K}}>({poolTeams(p).length})</span></div>
+                    {poolTeams(p).length===0?<div style={{color:"#C7C7CC",fontSize:".74rem",fontStyle:"italic"}}>Empty</div>
+                    :poolTeams(p).map(tm=>(
+                      <div key={tm.id} style={{display:"flex",alignItems:"center",gap:6,padding:"5px 0",borderBottom:`1px solid ${BR}`,fontSize:".76rem"}}>
+                        <div style={{width:6,height:6,background:tm.color||K,borderRadius:1,flexShrink:0}}/>
+                        <span style={{flex:1,fontWeight:600,lineHeight:1.2}}>{tm.name}</span>
+                        <div style={{display:"flex",gap:3,flexShrink:0}}>
+                          {POOLS.filter(x=>x!==p).map(op=><button key={op} className="btn bk" style={{padding:"2px 5px",fontSize:".55rem",borderRadius:4}} onClick={()=>assignPool(tm.id,op)}>→{op}</button>)}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ))}
+              </div>
+              {teams.filter(x=>!x.pool).length>0&&(
+                <>
+                  <div className="sh">Unassigned ({teams.filter(x=>!x.pool).length})</div>
+                  {teams.filter(x=>!x.pool).map(tm=>(
+                    <div key={tm.id} className="crd" style={{padding:"13px 16px",marginBottom:9,borderLeft:`3px solid ${tm.color||K}`}}>
+                      <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:10,flexWrap:"wrap"}}>
+                        <div style={{fontWeight:700,fontSize:".86rem"}}>{tm.name}</div>
+                        <div style={{display:"flex",gap:7}}>
+                          {POOLS.map(p=><button key={p} className="btn bk bsm" onClick={()=>assignPool(tm.id,p)}>Pool {p}</button>)}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </>
+              )}
+              {teams.filter(x=>!x.pool).length===0&&teams.length>0&&(
+                <div className="crd" style={{padding:"20px",textAlign:"center"}}>
+                  <div style={{color:GR,fontWeight:700,marginBottom:8}}>All teams assigned ✓</div>
+                  <button className="btn bk bsm" onClick={()=>setTab("schedule")}>Generate Schedule →</button>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* SCHEDULE TAB */}
+          {tab==="schedule"&&(
+            <div className="fu">
+              <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:14,flexWrap:"wrap",gap:8}}>
+                <div style={{fontWeight:700}}>{games.length>0?`${games.length} Games`:"No Schedule Yet"}</div>
+                <button className="btn ba bsm" onClick={generateSchedule} disabled={genning}>{genning?<Spin dark/>:"⚡ Generate"}</button>
+              </div>
+              {games.length===0?<div className="crd" style={{padding:"40px 20px",textAlign:"center"}}>
+                <div style={{fontSize:"2rem",marginBottom:10}}>📅</div>
+                <div style={{fontWeight:700,marginBottom:6}}>No Schedule Yet</div>
+                <div style={{color:MU,fontSize:".84rem",marginBottom:16}}>Assign teams to pools first, then generate.</div>
+                <button className="btn bk bsm" onClick={()=>setTab("pools")}>Assign Pools →</button>
+              </div>
+              :POOLS.map(p=>{
+                const pg=games.filter(g=>g.pool===p);
+                if(!pg.length)return null;
+                const rounds=[...new Set(pg.map(g=>g.time))];
+                return(
+                  <div key={p} style={{marginBottom:20}}>
+                    <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:10}}>
+                      <div style={{background:K,color:AC,padding:"3px 10px",borderRadius:6,fontSize:".65rem",fontWeight:800,letterSpacing:1,textTransform:"uppercase"}}>Pool {p}</div>
+                      <div style={{flex:1,height:1,background:BR}}/>
+                      <span style={{fontSize:".7rem",color:MU}}>{pg.filter(x=>x.completed).length}/{pg.length} done</span>
+                    </div>
+                    {rounds.map(rnd=>(
+                      <div key={rnd} style={{marginBottom:14}}>
+                        <div style={{fontSize:".7rem",fontWeight:700,textTransform:"uppercase",letterSpacing:1,color:MU,marginBottom:8,paddingLeft:2}}>{rnd}</div>
+                        {pg.filter(g=>g.time===rnd).map((g,gi)=>{
+                          const sc=scoreEdit[g.id]||{};
+                          return(
+                            <div key={gi} className="crd" style={{padding:"14px 16px",marginBottom:8,borderLeft:`3px solid ${g.completed?GR:AC}`}}>
+                              <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:10,flexWrap:"wrap"}}>
+                                <Badge type="pgr">{g.court||"Court"}</Badge>
+                                {g.completed?<Badge type="pg">Final</Badge>:<Badge type="py">Pending</Badge>}
+                              </div>
+                              <div style={{display:"flex",alignItems:"center",gap:12}}>
+                                <div style={{flex:1}}>
+                                  <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:8}}>
+                                    <div style={{width:10,height:10,background:tColor(g.team1_id),borderRadius:3,flexShrink:0}}/>
+                                    <span style={{fontWeight:700,fontSize:".86rem"}}>{tName(g.team1_id)}</span>
+                                  </div>
+                                  <div style={{display:"flex",alignItems:"center",gap:8}}>
+                                    <div style={{width:10,height:10,background:tColor(g.team2_id),borderRadius:3,flexShrink:0}}/>
+                                    <span style={{fontWeight:700,fontSize:".86rem"}}>{tName(g.team2_id)}</span>
+                                  </div>
+                                </div>
+                                {g.completed?(
+                                  <div style={{textAlign:"right"}}>
+                                    <div className="B" style={{fontSize:"1.6rem",fontWeight:900,color:+g.score1>+g.score2?GR:MU,lineHeight:1.1}}>{g.score1}</div>
+                                    <div className="B" style={{fontSize:"1.6rem",fontWeight:900,color:+g.score2>+g.score1?GR:MU,lineHeight:1.1}}>{g.score2}</div>
+                                  </div>
+                                ):(
+                                  <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:8}}>
+                                    <div style={{display:"flex",alignItems:"center",gap:6}}>
+                                      <input className="si" style={{width:60,fontSize:"1.4rem",padding:"8px 0"}} type="number" placeholder="0" value={sc.s1||""} onChange={e=>setScoreEdit(p=>({...p,[g.id]:{...sc,s1:e.target.value}}))}/>
+                                      <span style={{color:MU,fontWeight:700}}>–</span>
+                                      <input className="si" style={{width:60,fontSize:"1.4rem",padding:"8px 0"}} type="number" placeholder="0" value={sc.s2||""} onChange={e=>setScoreEdit(p=>({...p,[g.id]:{...sc,s2:e.target.value}}))}/>
+                                    </div>
+                                    <button className="btn bk bsm" style={{width:"100%"}} disabled={!sc.s1||!sc.s2} onClick={()=>saveScore(g)}>Save ✓</button>
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    ))}
+                  </div>
+                );
+              })}
+            </div>
+          )}
+
+          {/* PAYMENTS TAB */}
+          {tab==="payments"&&(
+            <div className="fu">
+              <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:10,marginBottom:14}}>
+                {[{l:"Collected",v:`$${npaid*t.entry_fee*4}+`,c:GR},{l:"Pending",v:`$${unp*t.entry_fee*4}+`,c:RE},{l:"Teams",v:`${teams.length}/${t.max_teams}`,c:K}].map((s,i)=>(
+                  <div key={i} className="crd" style={{padding:"14px 12px",textAlign:"center"}}>
+                    <div className="B" style={{fontSize:"1.4rem",fontWeight:900,color:s.c}}>{s.v}</div>
+                    <div style={{fontSize:".62rem",color:MU,textTransform:"uppercase",letterSpacing:1,marginTop:4,fontWeight:700}}>{s.l}</div>
+                  </div>
+                ))}
+              </div>
+              {unp>0&&<div style={{background:"#FFF9E8",border:"1px solid #FFE066",borderRadius:12,padding:"12px 16px",marginBottom:12,fontSize:".82rem",fontWeight:600,color:"#7A5C00"}}>⚡ {unp} team{unp>1?"s":""} still owe payment</div>}
+              {teams.map(tm=>(
+                <div key={tm.id} className="crd" style={{padding:"13px 16px",marginBottom:8,borderLeft:`3px solid ${tm.color||K}`}}>
+                  <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:10}}>
+                    <div>
+                      <div style={{fontWeight:700,fontSize:".86rem"}}>{tm.name}</div>
+                      <div style={{fontSize:".72rem",color:MU,marginTop:2}}>{tm.players} players · ${tm.players*t.entry_fee}</div>
+                    </div>
+                    <div style={{display:"flex",gap:7,alignItems:"center"}}>
+                      {tm.paid?<Badge type="pg">Paid ✓</Badge>:<><Badge type="py">Owes ${tm.players*t.entry_fee}</Badge><button className="btn bk bxsm" onClick={()=>markPaid(tm.id)}>✓ Paid</button></>}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* ANNOUNCE TAB */}
+          {tab==="announce"&&(
+            <div className="fu" style={{maxWidth:500}}>
+              <div className="crd" style={{padding:20,marginBottom:14}}>
+                <div className="sh">Post Announcement</div>
+                <div style={{fontSize:".8rem",color:MU,marginBottom:14,lineHeight:1.6}}>This banner appears at the top of the public page instantly.</div>
+                <textarea className="inp" rows={4} placeholder="e.g. Court B is delayed 15 min. All Court B teams please stand by..." value={edit.announcement||""} onChange={e=>setEdit(p=>({...p,announcement:e.target.value}))} style={{resize:"vertical",fontFamily:"'Inter',sans-serif",marginBottom:12}}/>
+                {edit.announcement&&(
+                  <div style={{background:"#FFF9E8",border:"1px solid #FFE066",borderRadius:10,padding:"12px 14px",marginBottom:12}}>
+                    <div style={{fontSize:".65rem",fontWeight:700,textTransform:"uppercase",letterSpacing:1,color:"#8C6D00",marginBottom:4}}>Preview</div>
+                    <div style={{fontSize:".83rem",color:"#555",lineHeight:1.5}}>📢 {edit.announcement}</div>
+                  </div>
+                )}
+                <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:9}}>
+                  <button className="br" onClick={()=>setEdit(p=>({...p,announcement:""}))}>Clear</button>
+                  <button className="btn bk" style={{padding:13}} disabled={saving} onClick={()=>save()}>{saving?<Spin/>:"Post ✓"}</button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* SETTINGS TAB */}
+          {tab==="settings"&&(
+            <div className="fu" style={{maxWidth:500}}>
+              {[{title:"Tournament Info",fields:[{k:"name",l:"Tournament Name",p:"e.g. Ortega's Grass Volleyball"},{k:"date",l:"Date",p:"e.g. March 22, 2026"},{k:"venue",l:"Venue / Park",p:"e.g. Katelyn Rose Park"},{k:"city",l:"City, State",p:"e.g. Mansfield, TX"},{k:"entry_fee",l:"Entry Fee Per Player",p:"25",tp:"number"},{k:"max_teams",l:"Max Teams",p:"15",tp:"number"},{k:"logo_url",l:"Logo URL (optional)",p:"https://..."},{k:"emoji",l:"Tournament Emoji",p:"🌿 e.g. 🏖️ ⛱️ 🔥 🌊"},{k:"host_password",l:"Host Password",p:"Change password"},{k:"payment_info",l:"Payment Instructions",p:"Cash/Venmo at check-in"}]},
+                {title:"Branding & Colors",fields:[]},
+                {title:"Payment Options",fields:[]},
+                {title:"Schedule Times",fields:[{k:"captains_meeting",l:"Captains Meeting",p:"8:30 AM"},{k:"games_start",l:"Pool Play Starts",p:"9:00 AM"},{k:"bracket_start",l:"Bracket Starts",p:"~1:00 PM"},{k:"finals_start",l:"Finals",p:"~3:00 PM"}]},
+                {title:"Game Format",fields:[{k:"scoring",l:"Scoring (e.g. Rally to 18)",p:"e.g. Rally to 21"},{k:"matches_per_game",l:"Matches Per Pool Game",p:"e.g. 2"},{k:"num_pools",l:"Number of Pools",p:"3",sel:["2","3","4","5","6"]},{k:"bracket_type",l:"Bracket Type",p:"Single Elimination",sel:["Single Elimination","Double Elimination","Round Robin","Pool Play Only"]},{k:"surface",l:"Surface",p:"Grass",sel:["Grass","Sand","Indoor","Beach","Hardcourt"]},{k:"min_players",l:"Min Players",p:"4",sel:["2","3","4","5","6"]},{k:"max_players",l:"Max Players",p:"5",sel:["2","3","4","5","6","7","8"]}]}
+              ].map(section=>(
+                <div key={section.title} className="crd" style={{padding:20,marginBottom:14}}>
+                  <div className="sh">{section.title}</div>
+                  {section.title==="Payment Options"?(
+                    <div>
+                      <div style={{marginBottom:14}}>
+                        <div style={{fontSize:".68rem",fontWeight:700,textTransform:"uppercase",letterSpacing:.5,color:MU,marginBottom:10}}>Payment Methods Shown to Players</div>
+                        {[{k:"show_checkin",l:"💵 Pay at Check-in"},{k:"show_online",l:"💳 Pay Online"}].map(opt=>(
+                          <div key={opt.k} onClick={()=>setEdit(p=>({...p,[opt.k]:p[opt.k]===false?true:false}))} style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"12px 14px",background:OF,borderRadius:10,marginBottom:8,cursor:"pointer"}}>
+                            <span style={{fontWeight:600,fontSize:".86rem"}}>{opt.l}</span>
+                            <div style={{width:44,height:24,borderRadius:12,background:edit[opt.k]!==false?"#0A0A0A":"#C7C7CC",position:"relative",transition:"background .2s",flexShrink:0}}>
+                              <div style={{position:"absolute",top:2,left:edit[opt.k]!==false?20:2,width:20,height:20,borderRadius:"50%",background:"#fff",transition:"left .2s"}}/>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                      {[{k:"checkin_label",l:"Check-in Option Label",p:"Pay at Check-in"},{k:"checkin_desc",l:"Check-in Description",p:"Cash or Venmo on game day"},{k:"online_label",l:"Online Option Label",p:"Pay Online"},{k:"online_desc",l:"Online Description",p:"Secure your spot now"}].map(x=>(
+                        <div key={x.k} style={{marginBottom:12}}>
+                          <label style={{display:"block",fontSize:".68rem",fontWeight:700,marginBottom:5,textTransform:"uppercase",letterSpacing:.5,color:MU}}>{x.l}</label>
+                          <input className="inp" placeholder={x.p} value={edit[x.k]||""} onChange={e=>setEdit(p=>({...p,[x.k]:e.target.value}))}/>
+                        </div>
+                      ))}
+                    </div>
+                  ):section.title==="Branding & Colors"?(
+                    <div>
+                      <div style={{marginBottom:14}}>
+                        <label style={{display:"block",fontSize:".68rem",fontWeight:700,marginBottom:5,textTransform:"uppercase",letterSpacing:.5,color:MU}}>Tournament Emoji</label>
+                        <input className="inp" placeholder="🌿 e.g. 🏖️ ⛱️ 🔥 🌊" value={edit.emoji||""} onChange={e=>setEdit(p=>({...p,emoji:e.target.value}))}/>
+                      </div>
+                      <div style={{marginBottom:14}}>
+                        <label style={{display:"block",fontSize:".68rem",fontWeight:700,marginBottom:8,textTransform:"uppercase",letterSpacing:.5,color:MU}}>Hero Background Color</label>
+                        <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
+                          {["#0A0A0A","#1a1a2e","#0f3460","#16213e","#1B1B2F","#2C3E50","#1a472a","#4a0e0e","#2d1b69","#1a1a1a"].map(c=>(
+                            <div key={c} onClick={()=>setEdit(p=>({...p,hero_color:c}))} style={{width:32,height:32,background:c,borderRadius:8,cursor:"pointer",border:`3px solid ${edit.hero_color===c?"#E8FF00":"transparent"}`,transition:"border .15s",flexShrink:0}}/>
+                          ))}
+                          <input type="color" value={edit.hero_color||"#0A0A0A"} onChange={e=>setEdit(p=>({...p,hero_color:e.target.value}))} style={{width:32,height:32,border:"none",padding:0,cursor:"pointer",borderRadius:8,background:"none"}} title="Custom color"/>
+                        </div>
+                        <div style={{marginTop:8,fontSize:".7rem",color:MU}}>Preview: <span style={{background:edit.hero_color||"#0A0A0A",color:"#fff",padding:"2px 8px",borderRadius:4,fontSize:".7rem"}}>Tournament Name</span></div>
+                      </div>
+                      <div style={{marginBottom:14}}>
+                        <label style={{display:"block",fontSize:".68rem",fontWeight:700,marginBottom:8,textTransform:"uppercase",letterSpacing:.5,color:MU}}>Accent / Button Color</label>
+                        <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
+                          {["#E8FF00","#FF3B30","#007AFF","#34C759","#FF9500","#AF52DE","#FF2D55","#00C7BE","#ffffff","#F5A623"].map(c=>(
+                            <div key={c} onClick={()=>setEdit(p=>({...p,accent_color:c}))} style={{width:32,height:32,background:c,borderRadius:8,cursor:"pointer",border:`3px solid ${edit.accent_color===c?"#0A0A0A":"transparent"}`,transition:"border .15s",flexShrink:0,boxShadow:"0 1px 3px rgba(0,0,0,.15)"}}/>
+                          ))}
+                          <input type="color" value={edit.accent_color||"#E8FF00"} onChange={e=>setEdit(p=>({...p,accent_color:e.target.value}))} style={{width:32,height:32,border:"none",padding:0,cursor:"pointer",borderRadius:8,background:"none"}} title="Custom color"/>
+                        </div>
+                        <div style={{marginTop:8,fontSize:".7rem",color:MU}}>Preview: <button style={{background:edit.accent_color||"#E8FF00",color:edit.accent_color==="#ffffff"||edit.accent_color==="#E8FF00"?"#0A0A0A":"#fff",border:"none",padding:"4px 12px",borderRadius:6,fontWeight:700,fontSize:".72rem",cursor:"default"}}>Register Now</button></div>
+                      </div>
+                    </div>
+                  ):section.fields.map(x=>(
+                    <div key={x.k} style={{marginBottom:12}}>
+                      <label style={{display:"block",fontSize:".68rem",fontWeight:700,marginBottom:5,textTransform:"uppercase",letterSpacing:.5,color:MU}}>{x.l}</label>
+                      {x.sel
+                        ?<select className="inp" value={edit[x.k]||x.p} onChange={e=>setEdit(p=>({...p,[x.k]:e.target.value}))}>
+                            {x.sel.map(o=><option key={o}>{o}</option>)}
+                          </select>
+                        :<input className="inp" type={x.tp||"text"} placeholder={x.p} value={edit[x.k]||""} onChange={e=>setEdit(p=>({...p,[x.k]:e.target.value}))}/>}
+                    </div>
+                  ))}
+                </div>
+              ))}
+              <button className="btn bk" style={{width:"100%",padding:15,marginBottom:20}} disabled={saving} onClick={()=>save()}>{saving?<Spin/>:"Save All Changes ✓"}</button>
+            </div>
+          )}
+
+        </div>
+      </div>
+
+      {/* Edit Team Modal */}
+      {editTeam&&(
+        <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,.5)",zIndex:200,display:"flex",alignItems:"flex-end",justifyContent:"center"}} onClick={e=>{if(e.target===e.currentTarget)setEditTeam(null);}}>
+          <div style={{background:W,borderRadius:"20px 20px 0 0",padding:"24px 20px 40px",width:"100%",maxWidth:480,maxHeight:"90vh",overflowY:"auto"}}>
+            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:20}}>
+              <div style={{fontWeight:700,fontSize:"1rem"}}>Edit Team</div>
+              <button style={{background:"none",border:"none",fontSize:"1.2rem",cursor:"pointer",color:MU}} onClick={()=>setEditTeam(null)}>✕</button>
+            </div>
+            <div style={{display:"flex",alignItems:"center",gap:10,padding:"12px 14px",background:OF,borderRadius:12,marginBottom:18,borderLeft:`4px solid ${editTeam.color||K}`}}>
+              <div style={{width:10,height:10,background:editTeam.color||K,borderRadius:3}}/>
+              <span style={{fontWeight:700}}>{editTeam.name}</span>
+            </div>
+            {[{k:"name",l:"Team Name",p:"Team name"},{k:"captain",l:"Captain",p:"Captain name"},{k:"phone",l:"Phone",p:"Phone number"}].map(x=>(
+              <div key={x.k} style={{marginBottom:13}}>
+                <label style={{display:"block",fontSize:".68rem",fontWeight:700,marginBottom:5,textTransform:"uppercase",letterSpacing:.5,color:MU}}>{x.l}</label>
+                <input className="inp" placeholder={x.p} value={teamForm[x.k]||""} onChange={e=>setTeamForm(p=>({...p,[x.k]:e.target.value}))}/>
+              </div>
+            ))}
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12,marginBottom:13}}>
+              <div>
+                <label style={{display:"block",fontSize:".68rem",fontWeight:700,marginBottom:5,textTransform:"uppercase",letterSpacing:.5,color:MU}}>Players</label>
+                <select className="inp" value={teamForm.players||4} onChange={e=>setTeamForm(p=>({...p,players:e.target.value}))}>
+                  {[2,3,4,5,6].map(n=><option key={n}>{n}</option>)}
+                </select>
+              </div>
+              <div>
+                <label style={{display:"block",fontSize:".68rem",fontWeight:700,marginBottom:5,textTransform:"uppercase",letterSpacing:.5,color:MU}}>Pool</label>
+                <select className="inp" value={teamForm.pool||""} onChange={e=>setTeamForm(p=>({...p,pool:e.target.value}))}>
+                  <option value="">Unassigned</option>
+                  {POOLS.map(p=><option key={p}>Pool {p}</option>)}
+                </select>
+              </div>
+            </div>
+            <div style={{display:"flex",gap:10,alignItems:"center",marginBottom:20,padding:"12px 14px",background:OF,borderRadius:12}}>
+              <span style={{fontSize:".84rem",fontWeight:600,flex:1}}>Payment Status</span>
+              <div style={{display:"flex",gap:8}}>
+                {[{v:false,l:"Pending"},{v:true,l:"Paid ✓"}].map(o=>(
+                  <button key={o.l} onClick={()=>setTeamForm(p=>({...p,paid:o.v}))} style={{padding:"7px 14px",background:teamForm.paid===o.v?K:W,color:teamForm.paid===o.v?W:K,border:`1.5px solid ${teamForm.paid===o.v?K:BR}`,borderRadius:8,cursor:"pointer",fontWeight:700,fontSize:".76rem",fontFamily:"'Inter',sans-serif",transition:"all .15s"}}>{o.l}</button>
+                ))}
+              </div>
+            </div>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 2fr",gap:10}}>
+              <button className="br" style={{padding:14}} onClick={()=>setEditTeam(null)}>Cancel</button>
+              <button className="btn bk" style={{padding:14}} onClick={saveTeamEdit}>Save Changes ✓</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Mobile bottom nav — Uber style */}
+      <nav className="bnav">
+        {NAV_MOB.map(n=>(
+          <button key={n.id} className={`bni ${tab===n.id?"on":""}`} onClick={()=>setTab(n.id)}>
+            <span className="bni-ic">{n.ic}</span>
+            <span>{n.lb}{n.id==="payments"&&unp>0?` (${unp})`:""}</span>
+          </button>
+        ))}
+      </nav>
+    </div>
+  );
+}
+
+/* ── APP ── */
+window.__TFHost = Host;
+
+</script>
+</body>
 </html>
