@@ -14,7 +14,7 @@ export default function HostDashboard({ t, teams, games, bracketGames, onBack, o
   const [saving, setSaving] = useState(false)
   const [edit, setEdit] = useState({ ...t })
   const [genning, setGenning] = useState(false)
-  const [numCourts, setNumCourts] = useState(3)
+  const [numCourts, setNumCourts] = useState(4)
   const [scoreEdit, setScoreEdit] = useState({})
   const [editTeam, setEditTeam] = useState(null)
   const [teamForm, setTeamForm] = useState({})
@@ -107,7 +107,7 @@ export default function HostDashboard({ t, teams, games, bracketGames, onBack, o
   const generateSchedule = async () => {
     setGenning(true)
     await sb.from('games').delete().eq('tournament_id', t.id)
-    const allCourts = ['Court A', 'Court B', 'Court C']
+    const allCourts = ['Court A', 'Court B', 'Court C', 'Court D']
     const courts = allCourts.slice(0, numCourts)
     const allMatchups = []
     for (const pool of POOLS) {
@@ -448,7 +448,7 @@ export default function HostDashboard({ t, teams, games, bracketGames, onBack, o
               <div style={{ background: '#F7F7F7', borderRadius: 12, padding: '14px 16px', marginBottom: 16, border: '1.5px solid #E5E5E5' }}>
                 <div style={{ fontSize: '.68rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: .5, color: '#8E8E93', marginBottom: 10 }}>Courts Available</div>
                 <div style={{ display: 'flex', gap: 8, marginBottom: 14 }}>
-                  {[1, 2, 3].map(n => (
+                  {[1, 2, 3, 4].map(n => (
                     <button key={n} onClick={() => setNumCourts(n)}
                       style={{ flex: 1, padding: '12px 8px', background: numCourts === n ? '#0A0A0A' : '#fff', color: numCourts === n ? '#fff' : '#0A0A0A', border: `2px solid ${numCourts === n ? '#0A0A0A' : '#E5E5E5'}`, borderRadius: 10, cursor: 'pointer', fontWeight: 700, fontSize: '.9rem', fontFamily: 'Inter,sans-serif' }}>
                       {n} {n === 1 ? 'Court' : 'Courts'}
